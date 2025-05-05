@@ -43,6 +43,7 @@
     // Signed in 
     const user = userCredential.user;
     alert("done login")
+    window.location.href = "/dashboard.html";
     // ...
   })
   .catch((error) => {
