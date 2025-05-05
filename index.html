@@ -9,6 +9,7 @@
   <title>Ends - login to continue</title> 
 
   <link rel="stylesheet" href="./style.css"> 
+  <script type="module" src="script.js" defer></script>
 
  </head> 
 
@@ -20,19 +21,19 @@
 
     <div class="content"> 
 
-     <h2>Sign In</h2> 
+     <h2>LogIn</h2> 
 
      <div class="form"> 
 
       <div class="inputBox"> 
 
-       <input type="text" required> <i>Username</i> 
+       <input type="text" required id="email"> <i>Email</i> 
 
       </div> 
 
       <div class="inputBox"> 
 
-       <input type="password" required> <i>Password</i> 
+       <input type="password" required id="password"> <i>Password</i> 
 
       </div> 
 
@@ -42,7 +43,7 @@
 
       <div class="inputBox"> 
 
-       <input type="submit" value="Login"> 
+       <input type="submit" value="Login" id="submit"> 
 
       </div> 
 
