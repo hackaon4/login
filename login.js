@@ -89,14 +89,16 @@ signIn.addEventListener('click', (event)=>{
            showMessage('Account does not Exist', 'signInMessage');
        }
    })
+
+   // Check if user is already logged in
    auth.onAuthStateChanged(user => {
     if (user) {
-      // User is signed in
+      // Already logged in – redirect to index
       window.location.href = "index.html";
     } else {
-      // No user is signed in
-      alert("pls sign in to continue")
+      // Not logged in – optionally show a message
+      console.log("Please log in to continue.");
     }
-})
+});   
 
 })
