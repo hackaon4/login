@@ -3,83 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register & Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="login.js"></script>
+    <title>Homepage</title>
+    <style>
+        body{
+            padding:30px;
+            background:linear-gradient(to right, #e2e2e2, #c9d6ff);
+        }
+        h1{
+            text-align:center;
+
+        }
+        button{
+            color:blueviolet;
+            background-color:#c9d6ff;
+            padding:5px;
+            border-radius:5px;
+            font-size:1rem;
+            font-weight:bold;
+            border:none;
+        }
+        button:hover{
+            text-decoration: underline;
+            color:blue;
+        }
+        button, div{
+            margin-left:15%;
+            font-size:20px;
+            padding:10px;
+        }
+        div{
+            font-weight:400;
+            color:rgb(12,11,11);
+
+        }
+        span{
+            font-weight:600;
+            font-size:22px;
+            color:black;
+        }
+    </style>
+    <script type="module" src="./dscript.js"></script>
 </head>
 <body>
-    <div class="container" id="signup" style="display:none;">
-      <h1 class="form-title">Register</h1>
-      <form method="post" action="">
-        <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
-        <div class="input-group">
-           <i class="fas fa-user"></i>
-           <input type="text"  id="fName" placeholder="First Name" required>
-           <label for="fname">First Name</label>
-        </div>
-        <div class="input-group">
-            <i class="fas fa-user"></i>
-            <input type="text"  id="lName" placeholder="Last Name" required>
-            <label for="lName">Last Name</label>
-        </div>
-        <div class="input-group">
-            <i class="fas fa-envelope"></i>
-            <input type="email"  id="rEmail" placeholder="Email" required>
-            <label for="rEmail">Email</label>
-        </div>
-        <div class="input-group">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="rPassword"  placeholder="Password" required>
-            <label for="rPassword">Password</label>
-        </div>
-       <button class="btn" id="submitSignUp" >Sign Up</button>
-      </form>
-      <p class="or">
-        ----------or--------
-      </p>
-      <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
-      </div>
-      <div class="links">
-        <p>Already Have Account ?</p>
-        <button id="signInButton">Sign In</button>
-      </div>
-    </div>
-
-  <div class="container" id="signIn">
-        <h1 class="form-title">Sign In</h1>
-        <form method="post" action="">
-          <div id="signInMessage" class="messageDiv" style="display:none;"></div>
-
-          <div class="input-group">
-              <i class="fas fa-envelope"></i>
-              <input type="email"  id="email" placeholder="Email" required>
-              <label for="email">Email</label>
-          </div>
-          <div class="input-group">
-              <i class="fas fa-lock"></i>
-            <input type="password" id="password"  placeholder="Password" required>
-              <label for="password">Password</label>
-          </div>
-          <p class="recover">
-            <a href="#">Recover Password</a>
-          </p>
-         <button  class="btn"  id="submitSignIn">Sign In</button>
-        </form>
-        <p class="or">
-          ----------or--------
-        </p>
-        <div class="icons">
-          <i class="fab fa-google"></i>
-          <i class="fab fa-facebook"></i>
-        </div>
-        <div class="links">
-          <p>Don't have account yet?</p>
-          <button id="signUpButton">Sign Up</button>
-        </div>
-      </div>
-      <script src="script.js"></script>
+    <div><h1></h1>Welcome <span id="loggedUserFName"></span> to the Homepage</h1> </div>
+    <div>Last Name: <span id="loggedUserLName"></span></div>
+    <div>Email: <span id="loggedUserEmail"></span></div>
+    <button id="logout">Logout</button>
 </body>
 </html>

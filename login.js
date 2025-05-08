@@ -77,7 +77,7 @@ signIn.addEventListener('click', (event)=>{
        showMessage('login is successful', 'signInMessage');
        const user=userCredential.user;
        localStorage.setItem('loggedInUserId', user.uid);
-       window.location.href='Dashboard.html';
+       window.location.href='index.html';
    })
    .catch((error)=>{
        const errorCode=error.code;
@@ -88,4 +88,14 @@ signIn.addEventListener('click', (event)=>{
            showMessage('Account does not Exist', 'signInMessage');
        }
    })
+
+   auth.onAuthStateChanged(user => {
+    if (user) {
+      // User is signed in
+      window.location.href = "index.html";
+    } else {
+      // No user is signed in
+      alert("pls sign in to continue")
+    }
+})
 })

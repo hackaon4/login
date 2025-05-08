@@ -18,6 +18,15 @@ const firebaseConfig = {
   const auth=getAuth();
   const db=getFirestore();
 
+auth.onAuthStateChanged(user => {
+    if (user) {
+      // User is signed in
+      alert("welcome user")
+    } else {
+      // No user is signed in
+      window.location.href = "login.html";
+    }
+})
   onAuthStateChanged(auth, (user)=>{
     const loggedInUserId=localStorage.getItem('loggedInUserId');
     if(loggedInUserId){
