@@ -65,6 +65,7 @@ signUp.addEventListener('click', (event)=>{
    })
 });
 
+
 const signIn=document.getElementById('submitSignIn');
 signIn.addEventListener('click', (event)=>{
    event.preventDefault();
@@ -88,7 +89,6 @@ signIn.addEventListener('click', (event)=>{
            showMessage('Account does not Exist', 'signInMessage');
        }
    })
-
    auth.onAuthStateChanged(user => {
     if (user) {
       // User is signed in
@@ -98,4 +98,5 @@ signIn.addEventListener('click', (event)=>{
       alert("pls sign in to continue")
     }
 })
+
 })
