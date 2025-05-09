@@ -13,6 +13,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth=getAuth();
 
 auth.onAuthStateChanged(user => {
     if (user) {

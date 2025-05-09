@@ -35,6 +35,7 @@ signUp.addEventListener('click', (event)=>{
    const auth=getAuth();
    const db=getFirestore();
 
+
    createUserWithEmailAndPassword(auth, email, password)
    .then((userCredential)=>{
        const user=userCredential.user;
@@ -90,15 +91,5 @@ signIn.addEventListener('click', (event)=>{
        }
    })
 
-   // Check if user is already logged in
-   auth.onAuthStateChanged(user => {
-    if (user) {
-      // Already logged in – redirect to index
-      window.location.href = "index.html";
-    } else {
-      // Not logged in – optionally show a message
-      console.log("Please log in to continue.");
-    }
-});   
 
 })
