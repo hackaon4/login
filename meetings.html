@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ends - Learn with Highend Tech</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script type="module" src="dscript.js"></script>
+</head>
+
+<body>
+    <style>
+/* unvisited link */
+a:link {
+  color: rgb(107, 106, 106);
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: rgb(255, 255, 255);
+}
+
+/* selected link */
+a:active {
+  color: rgb(255, 255, 255);
+}
+</style>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="favicon-32x32.png" alt="">
+                        </span>
+                        <span class="title">Welcome <span id="loggedUserFName"></id> </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/index.html">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/meetings">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/tests">
+                        <span class="icon">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tests</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/resources">
+                        <span class="icon">
+                            <ion-icon name="library-outline"></ion-icon>
+                        </span>
+                        <span class="title">Resources</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://wa.me/917070140150">
+                        <span class="icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </span>
+                        <span class="title">Help</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Vid.html">
+                        <span class="icon">
+                            <ion-icon name="camera-outline"></ion-icon>
+                        </span>
+                        <span class="title">Videos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title" id="logout" >Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="user">
+                    <img src="assets/imgs/OIP.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            <div class="cardBox">
+                <div class="card">
+                    
+                        <div>
+                             <div class="numbers">15</div>
+                        <div class="cardName">Sessions Taken</div>
+                    
+                        </div>
+
+                        <div class="iconBx">
+                            <ion-icon name="desktop-outline"></ion-icon>
+                     </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">Networking</div>
+                        <div class="cardName">Upcoming Session</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="wifi-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">2</div>
+                        <div class="cardName">Avilable Tests</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="document-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">500+</div>
+                        <div class="cardName">Avilable Resources</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="library-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================ Order Details List ================= -->
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Recent Meetings</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Session</td>
+                                <td>Date</td>
+                                <td>Time</td>
+                                <td>Status</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Introduction</td>
+                                <td>02/05/2025</td>
+                                <td>6:30 PM IST</td>
+                                <td><span class="status delivered">Completed</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Networking Basics</td>
+                                <td>10/05/2025</td>
+                                <td>9:00 PM IST</td>
+                                <td><span class="status delivered">Completed</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Networking Advance</td>
+                                <td>17/05/2025</td>
+                                <td>9:00 PM IST</td>
+                                <td><span class="status pending">Up Next</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Virtual Lab Setup</td>
+                                <td>18/05/2025</td>
+                                <td>9:00pm</td>
+                                <td><span class="status inProgress">Upcoming</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Learning Linux</td>
+                                <td>24/05/2025</td>
+                                <td>9:00 IST</td>
+                                <td><span class="status inProgress">Upcoming</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Learning OpenSource</td>
+                                <td>25/05/2025</td>
+                                <td>9:00 PM IST</td>
+                                <td><span class="status inProgress">Upcoming</span></td>
+                    
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ================= New Customers ================ -->
+                <div class="recentCustomers">
+                    <div class="cardHeader">
+                        <h2>Top Students</h2>
+                    </div>
+
+                    <table>
+                        
+                        <tr> 
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>User-1<br> <span> Score•90 </span></h4>
+                            </td>
+                        </tr>
+                        
+                       
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>User-2 <br> <span>India</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>David <br> <span>Italy</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                               <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>Amit <br> <span>India</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>Baka<br> <span>Japan</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>Amit <br> <span>India</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>David <br> <span>Italy</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <ion-icon name="person"></ion-icon>
+                            </td>
+                            <td>
+                                <h4>Amit <br> <span>India</span></h4>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script src="assets/js/main.js"></script>
+
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
