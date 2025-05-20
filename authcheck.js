@@ -21,7 +21,7 @@ auth.onAuthStateChanged(user => {
       window.location.href = "index.html";
     } else {
       // No user is signed in
-      alert("pls sign in to continue")
+      showMessage('Login with your account', 'signInMessage');
     }
 });
 

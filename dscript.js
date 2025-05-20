@@ -21,7 +21,7 @@ const firebaseConfig = {
 auth.onAuthStateChanged(user => {
     if (user) {
       // User is signed in
-      alert("welcome user")
+     
     } else {
       // No user is signed in
       window.location.href = "login.html";
