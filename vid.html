@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Videos - Learn with Highend Tech</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script type="module" src="dscript.js"></script>
+    <style>
+        /* unvisited link */
+        a:link {
+            color: rgb(107, 106, 106);
+        }
+
+        /* visited link */
+        a:visited {
+            color: green;
+        }
+
+        /* mouse over link */
+        a:hover {
+            color: rgb(255, 255, 255);
+        }
+
+        /* selected link */
+        a:active {
+            color: rgb(255, 255, 255);
+        }
+        
+        /* Video player section */
+        .video-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .video-player {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .video-player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .video-info p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        /* Lecture list section - matches screenshot */
+        .lecture-list-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        
+        .lecture-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .lecture-list-header h2 {
+            color: #333;
+            margin: 0;
+        }
+        
+        .lecture-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .lecture-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .lecture-item h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .lecture-item p {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .lecture-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.85em;
+        }
+        
+        .lecture-duration {
+            display: flex;
+            align-items: center;
+        }
+        
+        .lecture-duration::before {
+            content: "☉";
+            margin-right: 5px;
+        }
+        
+        .lecture-status {
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            color: #666;
+            font-size: 0.8em;
+        }
+        
+        .lecture-status.completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .lecture-status.in-progress {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .lecture-status.not-started {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        /* Navigation buttons */
+        .video-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .nav-button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: #45a049;
+        }
+        
+        .nav-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        /* Progress tracking */
+        .progress-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 1200px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .video-progress {
+            margin-top: 15px;
+        }
+        
+        .video-progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .video-progress-fill {
+            height: 100%;
+            background: #2196F3;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .video-meta {
+                flex-direction: column;
+            }
+            
+            .video-meta span {
+                margin-bottom: 5px;
+            }
+            
+            .lecture-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="favicon-32x32.png" alt="">
+                        </span>
+                        <span class="title">Welcome <span id="loggedUserFName"></span></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/index.html">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/meetings.html">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/tests">
+                        <span class="icon">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tests</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/resources">
+                        <span class="icon">
+                            <ion-icon name="library-outline"></ion-icon>
+                        </span>
+                        <span class="title">Resources</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://wa.me/917070140150">
+                        <span class="icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </span>
+                        <span class="title">Help</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Vid.html">
+                        <span class="icon">
+                            <ion-icon name="camera-outline"></ion-icon>
+                        </span>
+                        <span class="title">Videos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title" id="logout">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="user">
+                    <img src="assets/imgs/OIP.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- Main video content -->
+            <div class="video-container">
+                <div class="video-player">
+                    <iframe id="currentVideo" width="560" height="315" src="https://www.youtube.com/embed/LaEgpNBt-bQ?enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                
+                <div class="video-info">
+                    <h2 id="videoTitle">Networking Basics - Introduction to TCP/IP</h2>
+                    <p id="videoDescription">In this lecture, we cover the fundamentals of TCP/IP networking, including IP addressing, subnetting, and the OSI model. This is essential knowledge for anyone pursuing a career in IT or cybersecurity.</p>
+                    
+                    <div class="video-meta">
+                        <span><ion-icon name="time-outline"></ion-icon> <span id="videoDuration">45 min</span></span>
+                        <span><ion-icon name="calendar-outline"></ion-icon> <span id="videoDate">May 10, 2025</span></span>
+                        <span><ion-icon name="download-outline"></ion-icon> <a href="#" id="videoSlides">Download Slides</a></span>
+                        <span><ion-icon name="document-text-outline"></ion-icon> <a href="#" id="videoNotes">Lecture Notes</a></span>
+                    </div>
+                    
+                    <!-- Current video progress -->
+                    <div class="video-progress">
+                        <div class="progress-header">
+                            <span>Current video progress</span>
+                            <span id="currentVideoProgress">0%</span>
+                        </div>
+                        <div class="video-progress-bar">
+                            <div id="currentVideoProgressBar" class="video-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation buttons -->
+                <div class="video-navigation">
+                    <button id="prevButton" class="nav-button" disabled>
+                        <ion-icon name="arrow-back"></ion-icon> Previous Session
+                    </button>
+                    <button id="nextButton" class="nav-button">
+                        Next Session <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Course progress -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <h3>Course Progress</h3>
+                    <span id="progressPercentage">0% Complete</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="courseProgressBar" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="completedLectures">0</span> of <span id="totalLectures">0</span> lectures completed
+                </div>
+            </div>
+            
+            <!-- Video playlist - matches screenshot layout -->
+            <div class="lecture-list-container">
+                <div class="lecture-list-header">
+                    <h2>Course Lectures</h2>
+                </div>
+                
+                <div class="lecture-list" id="lectureList">
+                    <!-- Lectures will be loaded dynamically via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- YouTube API -->
+    <script>
+        // Course Data (matches screenshot content)
+        const courseData = [
+            {
+                id: 1,
+                title: "Networking Fundamentals",
+                description: "Learn the basics of computer networking, including TCP/IP and network architecture.",
+                youtubeId: "LaEgpNBt-bQ",
+                duration: "45 min",
+                date: "May 10, 2025",
+                slidesLink: "#",
+                notesLink: "#",
+                status: "not-started",
+                progress: 0,
+                completed: false
+            },
+            {
+                id: 2,
+                title: "Network Security Basics",
+                description: "Introduction to firewalls, VPNs, and security protocols.",
+                youtubeId: "vv4y_uOneC0",
+                duration: "38 min",
+                date: "May 17, 2025",
+                slidesLink: "#",
+                notesLink: "#",
+                status: "not-started",
+                progress: 0,
+                completed: false
+            },
+            {
+                id: 3,
+                title: "Advanced Networking Concepts",
+                description: "Deep dive into routing protocols, VLANs, and network security.",
+                youtubeId: "wTpEc5RbV5s",
+                duration: "52 min",
+                date: "May 18, 2025",
+                slidesLink: "#",
+                notesLink: "#",
+                status: "not-started",
+                progress: 0,
+                completed: false
+            },
+            {
+                id: 4,
+                title: "Cloud Networking",
+                description: "Understanding networking in cloud environments like AWS and Azure.",
+                youtubeId: "IVquJh3DXUA",
+                duration: "1h 5min",
+                date: "May 24, 2025",
+                slidesLink: "#",
+                notesLink: "#",
+                status: "not-started",
+                progress: 0,
+                completed: false
+            },
+            {
+                id: 5,
+                title: "Linux Command Line Essentials",
+                description: "Master essential Linux commands for network administration.",
+                youtubeId: "5XgBd6rjuDQ",
+                duration: "1h 15min",
+                date: "May 31, 2025",
+                slidesLink: "#",
+                notesLink: "#",
+                status: "not-started",
+                progress: 0,
+                completed: false
+            }
+        ];
+
+        // DOM Elements
+        const currentVideo = document.getElementById("currentVideo");
+        const videoTitle = document.getElementById("videoTitle");
+        const videoDescription = document.getElementById("videoDescription");
+        const videoDuration = document.getElementById("videoDuration");
+        const videoDate = document.getElementById("videoDate");
+        const videoSlides = document.getElementById("videoSlides");
+        const videoNotes = document.getElementById("videoNotes");
+        const prevButton = document.getElementById("prevButton");
+        const nextButton = document.getElementById("nextButton");
+        const lectureList = document.getElementById("lectureList");
+        const courseProgressBar = document.getElementById("courseProgressBar");
+        const progressPercentage = document.getElementById("progressPercentage");
+        const completedLectures = document.getElementById("completedLectures");
+        const totalLectures = document.getElementById("totalLectures");
+        const currentVideoProgress = document.getElementById("currentVideoProgress");
+        const currentVideoProgressBar = document.getElementById("currentVideoProgressBar");
+
+        // YouTube player and tracking
+        let player;
+        let currentVideoIndex = 0;
+        let videoInterval;
+
+        // Initialize the page
+        function initPage() {
+            totalLectures.textContent = courseData.length;
+            updateCourseProgress();
+            loadVideo(currentVideoIndex);
+            renderLectureList();
+            
+            // Load progress from localStorage
+            loadProgress();
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('videoProgress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                courseData.forEach((video, index) => {
+                    if (progress[index]) {
+                        video.progress = progress[index].progress;
+                        video.completed = progress[index].completed;
+                        video.status = progress[index].completed ? "completed" : 
+                                      progress[index].progress > 0 ? "in-progress" : "not-started";
+                    }
+                });
+                updateCourseProgress();
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('videoProgress', JSON.stringify(courseData));
+        }
+
+        // Load a video by index
+        function loadVideo(index) {
+            currentVideoIndex = index;
+            const video = courseData[index];
+            
+            // Update player source
+            if (player && player.loadVideoById) {
+                player.loadVideoById(video.youtubeId);
+            }
+            
+            videoTitle.textContent = video.title;
+            videoDescription.textContent = video.description;
+            videoDuration.textContent = video.duration;
+            videoDate.textContent = video.date;
+            videoSlides.href = video.slidesLink;
+            videoNotes.href = video.notesLink;
+
+            // Update current video progress
+            currentVideoProgress.textContent = `${video.progress}%`;
+            currentVideoProgressBar.style.width = `${video.progress}%`;
+
+            // Update navigation buttons
+            prevButton.disabled = index === 0;
+            nextButton.disabled = index === courseData.length - 1;
+        }
+
+        // Render the lecture list (matches screenshot layout)
+        function renderLectureList() {
+            lectureList.innerHTML = courseData.map((video, index) => `
+                <div class="lecture-item" onclick="changeVideo(${index})">
+                    <h3>${video.title}</h3>
+                    <p>${video.description}</p>
+                    <div class="lecture-meta">
+                        <span class="lecture-duration">${video.duration}</span>
+                        <span class="lecture-status ${video.status}">${
+                            video.status === "completed" ? "Completed" :
+                            video.status === "in-progress" ? "In Progress" : "Not started"
+                        }</span>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        // Update course progress
+        function updateCourseProgress() {
+            const completed = courseData.filter(video => video.completed).length;
+            const total = courseData.length;
+            const percent = Math.round((completed / total) * 100);
+            
+            courseProgressBar.style.width = `${percent}%`;
+            progressPercentage.textContent = `${percent}% Complete`;
+            completedLectures.textContent = completed;
+        }
+
+        // Change video by index
+        function changeVideo(index) {
+            currentVideoIndex = index;
+            loadVideo(index);
+        }
+
+        // YouTube API callbacks
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('currentVideo', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            initPage();
+        }
+
+        function onPlayerStateChange(event) {
+            const video = courseData[currentVideoIndex];
+            
+            // Clear any existing interval
+            clearInterval(videoInterval);
+            
+            if (event.data === YT.PlayerState.PLAYING) {
+                // Start tracking progress every second
+                videoInterval = setInterval(() => {
+                    const duration = player.getDuration();
+                    const currentTime = player.getCurrentTime();
+                    const percent = Math.round((currentTime / duration) * 100);
+                    
+                    // Update current video progress
+                    video.progress = percent;
+                    currentVideoProgress.textContent = `${percent}%`;
+                    currentVideoProgressBar.style.width = `${percent}%`;
+                    
+                    // Mark as completed if watched 95% or more
+                    if (percent >= 95 && !video.completed) {
+                        video.completed = true;
+                        video.status = "completed";
+                        
+                        // Update UI
+                        const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
+                        statusElements[currentVideoIndex].textContent = 'Completed';
+                        statusElements[currentVideoIndex].className = 'lecture-status completed';
+                        
+                        updateCourseProgress();
+                        saveProgress();
+                    } else if (percent > 0 && !video.completed) {
+                        video.status = "in-progress";
+                        const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
+                        statusElements[currentVideoIndex].textContent = 'In Progress';
+                        statusElements[currentVideoIndex].className = 'lecture-status in-progress';
+                    }
+                }, 1000);
+            }
+        }
+
+        // Event listeners
+        prevButton.addEventListener("click", () => {
+            if (currentVideoIndex > 0) {
+                changeVideo(currentVideoIndex - 1);
+            }
+        });
+
+        nextButton.addEventListener("click", () => {
+            if (currentVideoIndex < courseData.length - 1) {
+                changeVideo(currentVideoIndex + 1);
+            }
+        });
+
+        // Load YouTube API
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Global function for lecture item clicks
+        window.changeVideo = changeVideo;
+    </script>
+</body>
+</html>
