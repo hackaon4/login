@@ -295,7 +295,7 @@
                 <li>
                     <a href="/video">
                         <span class="icon">
-                            <ion-icon name="camera-outline"></ion-icon>
+                            <ion-icon name="videocam-outline"></ion-icon>
                         </span>
                         <span class="title">Videos</span>
                     </a>
@@ -425,7 +425,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <!-- YouTube API -->
+    <!-- YouTube API and custom script -->
     <script>
         // Course Data (matches screenshot content)
         const courseData = [
@@ -518,38 +518,57 @@
         let player;
         let currentVideoIndex = 0;
         let videoInterval;
+        const COURSE_KEY = 'videoCourseProgress';
 
         // Initialize the page
         function initPage() {
             totalLectures.textContent = courseData.length;
+            loadProgress(); // Load saved progress first
             updateCourseProgress();
             loadVideo(currentVideoIndex);
             renderLectureList();
-            
-            // Load progress from localStorage
-            loadProgress();
         }
 
         // Load progress from localStorage
         function loadProgress() {
-            const savedProgress = localStorage.getItem('videoProgress');
+            const savedProgress = localStorage.getItem(COURSE_KEY);
             if (savedProgress) {
-                const progress = JSON.parse(savedProgress);
-                courseData.forEach((video, index) => {
-                    if (progress[index]) {
-                        video.progress = progress[index].progress;
-                        video.completed = progress[index].completed;
-                        video.status = progress[index].completed ? "completed" : 
-                                      progress[index].progress > 0 ? "in-progress" : "not-started";
-                    }
-                });
-                updateCourseProgress();
+                try {
+                    const progress = JSON.parse(savedProgress);
+                    
+                    // Merge saved progress with default course data
+                    progress.forEach((savedVideo, index) => {
+                        if (courseData[index] && savedVideo.id === courseData[index].id) {
+                            courseData[index].progress = savedVideo.progress || 0;
+                            courseData[index].completed = savedVideo.completed || false;
+                            courseData[index].status = savedVideo.status || 
+                                (courseData[index].completed ? "completed" : 
+                                (courseData[index].progress > 0 ? "in-progress" : "not-started"));
+                        }
+                    });
+                } catch (e) {
+                    console.error("Error loading progress:", e);
+                    // If there's an error parsing, start fresh
+                    localStorage.removeItem(COURSE_KEY);
+                }
             }
         }
 
         // Save progress to localStorage
         function saveProgress() {
-            localStorage.setItem('videoProgress', JSON.stringify(courseData));
+            try {
+                // Only save the essential data we need to persist
+                const progressToSave = courseData.map(video => ({
+                    id: video.id,
+                    progress: video.progress,
+                    completed: video.completed,
+                    status: video.status
+                }));
+                
+                localStorage.setItem(COURSE_KEY, JSON.stringify(progressToSave));
+            } catch (e) {
+                console.error("Error saving progress:", e);
+            }
         }
 
         // Load a video by index
@@ -604,10 +623,16 @@
             courseProgressBar.style.width = `${percent}%`;
             progressPercentage.textContent = `${percent}% Complete`;
             completedLectures.textContent = completed;
+            
+            // Save progress whenever we update it
+            saveProgress();
         }
 
         // Change video by index
         function changeVideo(index) {
+            // Save progress of current video before switching
+            saveProgress();
+            
             currentVideoIndex = index;
             loadVideo(index);
         }
@@ -635,34 +660,72 @@
             if (event.data === YT.PlayerState.PLAYING) {
                 // Start tracking progress every second
                 videoInterval = setInterval(() => {
-                    const duration = player.getDuration();
-                    const currentTime = player.getCurrentTime();
-                    const percent = Math.round((currentTime / duration) * 100);
-                    
-                    // Update current video progress
-                    video.progress = percent;
-                    currentVideoProgress.textContent = `${percent}%`;
-                    currentVideoProgressBar.style.width = `${percent}%`;
-                    
-                    // Mark as completed if watched 95% or more
-                    if (percent >= 95 && !video.completed) {
-                        video.completed = true;
-                        video.status = "completed";
+                    try {
+                        const duration = player.getDuration();
+                        const currentTime = player.getCurrentTime();
+                        const percent = Math.round((currentTime / duration) * 100);
                         
-                        // Update UI
-                        const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
-                        statusElements[currentVideoIndex].textContent = 'Completed';
-                        statusElements[currentVideoIndex].className = 'lecture-status completed';
-                        
-                        updateCourseProgress();
-                        saveProgress();
-                    } else if (percent > 0 && !video.completed) {
-                        video.status = "in-progress";
-                        const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
-                        statusElements[currentVideoIndex].textContent = 'In Progress';
-                        statusElements[currentVideoIndex].className = 'lecture-status in-progress';
+                        // Only update if progress has actually changed
+                        if (percent !== video.progress) {
+                            video.progress = percent;
+                            currentVideoProgress.textContent = `${percent}%`;
+                            currentVideoProgressBar.style.width = `${percent}%`;
+                            
+                            // Determine status based on progress
+                            let newStatus;
+                            if (percent >= 95) {
+                                video.completed = true;
+                                newStatus = "completed";
+                            } else if (percent > 0) {
+                                video.completed = false;
+                                newStatus = "in-progress";
+                            } else {
+                                video.completed = false;
+                                newStatus = "not-started";
+                            }
+                            
+                            // Only update if status changed
+                            if (newStatus !== video.status) {
+                                video.status = newStatus;
+                                
+                                // Update UI
+                                const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
+                                statusElements[currentVideoIndex].textContent = 
+                                    video.status === "completed" ? "Completed" :
+                                    video.status === "in-progress" ? "In Progress" : "Not started";
+                                statusElements[currentVideoIndex].className = `lecture-status ${video.status}`;
+                                
+                                updateCourseProgress();
+                            }
+                            
+                            // Save progress periodically
+                            if (percent % 5 === 0) { // Save every 5% progress
+                                saveProgress();
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Error tracking video progress:", e);
+                        clearInterval(videoInterval);
                     }
                 }, 1000);
+            } else if (event.data === YT.PlayerState.ENDED) {
+                // Video ended - mark as completed if not already
+                if (!video.completed) {
+                    video.completed = true;
+                    video.progress = 100;
+                    video.status = "completed";
+                    
+                    currentVideoProgress.textContent = "100%";
+                    currentVideoProgressBar.style.width = "100%";
+                    
+                    // Update UI
+                    const statusElements = document.querySelectorAll('.lecture-item .lecture-status');
+                    statusElements[currentVideoIndex].textContent = 'Completed';
+                    statusElements[currentVideoIndex].className = 'lecture-status completed';
+                    
+                    updateCourseProgress();
+                    saveProgress();
+                }
             }
         }
 
@@ -678,6 +741,9 @@
                 changeVideo(currentVideoIndex + 1);
             }
         });
+
+        // Save progress when page is about to unload
+        window.addEventListener('beforeunload', saveProgress);
 
         // Load YouTube API
         const tag = document.createElement('script');

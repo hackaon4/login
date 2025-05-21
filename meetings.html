@@ -389,6 +389,7 @@
         .meeting-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
         .meeting-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
     </style>
+    <script type="module" src="dscript.js"></script>
 </head>
 
 <body>
@@ -396,7 +397,7 @@
     <div class="navigation">
         <ul>
             <li>
-                <a href="#">
+                <a href="/index.html">
                     <span class="icon">
                         <ion-icon name="home-outline"></ion-icon>
                     </span>
@@ -412,7 +413,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/Tests">
                     <span class="icon">
                         <ion-icon name="document-text-outline"></ion-icon>
                     </span>
@@ -420,7 +421,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/Resources">
                     <span class="icon">
                         <ion-icon name="book-outline"></ion-icon>
                     </span>
@@ -428,11 +429,11 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/video.html">
                     <span class="icon">
-                        <ion-icon name="settings-outline"></ion-icon>
+                        <ion-icon name="videocam-outline"></ion-icon>
                     </span>
-                    <span class="title">Settings</span>
+                    <span class="title">Video</span>
                 </a>
             </li>
         </ul>
@@ -449,7 +450,7 @@
         <div class="header">
             <h1>Meeting Schedule</h1>
             <div class="user-profile">
-                <span>Hi, John</span>
+                <span class="title">Hi <span id="loggedUserFName"></id> </span></span>
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
             </div>
         </div>
@@ -460,9 +461,6 @@
                 <h2>Upcoming Sessions</h2>
                 <div class="time-filter">
                     <button class="filter-btn active">All</button>
-                    <button class="filter-btn">Today</button>
-                    <button class="filter-btn">Upcoming</button>
-                    <button class="filter-btn">Completed</button>
                 </div>
             </div>
 
