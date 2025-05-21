@@ -5,331 +5,634 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ends - Learn with Highend Tech</title>
-    <!-- ======= Styles ====== -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script type="module" src="dscript.js"></script>
+    <title>Meeting Schedule - Highend Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #090a0d;
+            --secondary: #000000;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --warning: #ffcc00;
+            --danger: #f94144;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: #f5f7fb;
+            color: var(--dark);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            width: 80px;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navigation.active {
+            width: 250px;
+        }
+
+        .navigation ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding-top: 20px;
+        }
+
+        .navigation ul li {
+            position: relative;
+            width: 100%;
+            list-style: none;
+            transition: var(--transition);
+        }
+
+        .navigation ul li:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .navigation ul li a {
+            position: relative;
+            width: 100%;
+            display: flex;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .navigation ul li:hover a {
+            color: var(--white);
+        }
+
+        .navigation ul li a .icon {
+            position: relative;
+            display: block;
+            min-width: 80px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .navigation ul li a .title {
+            position: relative;
+            display: block;
+            height: 60px;
+            line-height: 60px;
+            white-space: nowrap;
+        }
+
+        /* Toggle */
+        .toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+        }
+
+        .toggle.active {
+            left: 230px;
+        }
+
+        /* Main */
+        .main {
+            position: absolute;
+            width: calc(100% - 80px);
+            left: 80px;
+            min-height: 100vh;
+            transition: var(--transition);
+            padding: 30px;
+        }
+
+        .main.active {
+            width: calc(100% - 250px);
+            left: 250px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        /* Meeting Schedule */
+        .meeting-container {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .meeting-container:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .meeting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .meeting-header h2 {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            background: var(--light);
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Meeting Table */
+        .meeting-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+        }
+
+        .meeting-table th {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            color: var(--white);
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .meeting-table th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        .meeting-table th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        .meeting-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .meeting-table tr:not(:first-child):hover td {
+            background: rgba(67, 97, 238, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .meeting-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .session-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .session-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .session-details h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .session-details p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status.completed {
+            background: rgba(75, 181, 67, 0.1);
+            color: var(--success);
+        }
+
+        .status.upcoming {
+            background: rgba(255, 204, 0, 0.1);
+            color: var(--warning);
+        }
+
+        .status.live {
+            background: rgba(249, 65, 68, 0.1);
+            color: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .join-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(67, 97, 238, 0.2);
+        }
+
+        .join-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+
+        .join-btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .join-btn i {
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .meeting-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .time-filter {
+                flex-wrap: wrap;
+            }
+            
+            .main {
+                padding: 20px 15px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .meeting-table tbody tr {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .meeting-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .meeting-table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .meeting-table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .meeting-table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .meeting-table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+    </style>
 </head>
 
 <body>
-    <style>
-/* unvisited link */
-a:link {
-  color: rgb(107, 106, 106);
-}
+    <!-- Navigation -->
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="active">
+                    <span class="icon">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                    </span>
+                    <span class="title">Meetings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                    </span>
+                    <span class="title">Tests</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="book-outline"></ion-icon>
+                    </span>
+                    <span class="title">Resources</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </span>
+                    <span class="title">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-/* visited link */
-a:visited {
-  color: green;
-}
-
-/* mouse over link */
-a:hover {
-  color: rgb(255, 255, 255);
-}
-
-/* selected link */
-a:active {
-  color: rgb(255, 255, 255);
-}
-</style>
-    <!-- =============== Navigation ================ -->
-    <div class="container">
-        <div class="navigation">
-            <ul>
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <img src="favicon-32x32.png" alt="">
-                        </span>
-                        <span class="title">Welcome <span id="loggedUserFName"></id> </span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/index.html">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-                        </span>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/meetings">
-                        <span class="icon">
-                            <ion-icon name="people-outline"></ion-icon>
-                        </span>
-                        <span class="title">Meetings</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/tests">
-                        <span class="icon">
-                            <ion-icon name="document-outline"></ion-icon>
-                        </span>
-                        <span class="title">Tests</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/resources">
-                        <span class="icon">
-                            <ion-icon name="library-outline"></ion-icon>
-                        </span>
-                        <span class="title">Resources</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="https://wa.me/917070140150">
-                        <span class="icon">
-                            <ion-icon name="logo-whatsapp"></ion-icon>
-                        </span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/Vid.html">
-                        <span class="icon">
-                            <ion-icon name="camera-outline"></ion-icon>
-                        </span>
-                        <span class="title">Videos</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title" id="logout" >Sign Out</span>
-                    </a>
-                </li>
-            </ul>
+    <!-- Main Content -->
+    <div class="main">
+        <!-- Toggle -->
+        <div class="toggle">
+            <ion-icon name="menu-outline" class="toggle-btn"></ion-icon>
         </div>
 
-        <!-- ========================= Main ==================== -->
-        <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
+        <!-- Header -->
+        <div class="header">
+            <h1>Meeting Schedule</h1>
+            <div class="user-profile">
+                <span>Hi, John</span>
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+            </div>
+        </div>
 
-                <div class="user">
-                    <img src="assets/imgs/OIP.jpg" alt="">
+        <!-- Meeting Container -->
+        <div class="meeting-container">
+            <div class="meeting-header">
+                <h2>Upcoming Sessions</h2>
+                <div class="time-filter">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Today</button>
+                    <button class="filter-btn">Upcoming</button>
+                    <button class="filter-btn">Completed</button>
                 </div>
             </div>
 
-            <!-- ======================= Cards ================== -->
-            <div class="cardBox">
-                <div class="card">
-                    
-                        <div>
-                             <div class="numbers">15</div>
-                        <div class="cardName">Sessions Taken</div>
-                    
-                        </div>
-
-                        <div class="iconBx">
-                            <ion-icon name="desktop-outline"></ion-icon>
-                     </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="numbers">Networking</div>
-                        <div class="cardName">Upcoming Session</div>
-                    </div>
-
-                    <div class="iconBx">
-                        <ion-icon name="wifi-outline"></ion-icon>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="numbers">2</div>
-                        <div class="cardName">Avilable Tests</div>
-                    </div>
-
-                    <div class="iconBx">
-                        <ion-icon name="document-outline"></ion-icon>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="numbers">500+</div>
-                        <div class="cardName">Avilable Resources</div>
-                    </div>
-
-                    <div class="iconBx">
-                        <ion-icon name="library-outline"></ion-icon>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================ Order Details List ================= -->
-            <div class="details">
-                <div class="recentOrders">
-                    <div class="cardHeader">
-                        <h2>Recent Meetings</h2>
-                        <a href="#" class="btn">View All</a>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Session</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Status</td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Introduction</td>
-                                <td>02/05/2025</td>
-                                <td>6:30 PM IST</td>
-                                <td><span class="status delivered">Completed</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Networking Basics</td>
-                                <td>10/05/2025</td>
-                                <td>9:00 PM IST</td>
-                                <td><span class="status delivered">Completed</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Networking Advance</td>
-                                <td>17/05/2025</td>
-                                <td>9:00 PM IST</td>
-                                <td><span class="status pending">Up Next</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Virtual Lab Setup</td>
-                                <td>18/05/2025</td>
-                                <td>9:00pm</td>
-                                <td><span class="status inProgress">Upcoming</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Learning Linux</td>
-                                <td>24/05/2025</td>
-                                <td>9:00 IST</td>
-                                <td><span class="status inProgress">Upcoming</span></td>
-                            </tr>
-
-                            <tr>
-                                <td>Learning OpenSource</td>
-                                <td>25/05/2025</td>
-                                <td>9:00 PM IST</td>
-                                <td><span class="status inProgress">Upcoming</span></td>
-                    
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- ================= New Customers ================ -->
-                <div class="recentCustomers">
-                    <div class="cardHeader">
-                        <h2>Top Students</h2>
-                    </div>
-
-                    <table>
-                        
-                        <tr> 
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>User-1<br> <span> Score•90 </span></h4>
-                            </td>
-                        </tr>
-                        
-                       
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>User-2 <br> <span>India</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>David <br> <span>Italy</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                               <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>Amit <br> <span>India</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>Baka<br> <span>Japan</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>Amit <br> <span>India</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>David <br> <span>Italy</span></h4>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td width="60px">
-                                <ion-icon name="person"></ion-icon>
-                            </td>
-                            <td>
-                                <h4>Amit <br> <span>India</span></h4>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            <table class="meeting-table">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="session-info">
+                                <div class="session-icon">
+                                    <ion-icon name="rocket-outline"></ion-icon>
+                                </div>
+                                <div class="session-details">
+                                    <h3>Introduction</h3>
+                                    <p>Getting started with the course</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="session-details">
+                                <h3>02 May 2025</h3>
+                                <p>6:30 PM IST</p>
+                            </div>
+                        </td>
+                        <td><span class="status completed">Completed</span></td>
+                        <td><button class="join-btn" disabled><ion-icon name="checkmark-circle-outline"></ion-icon> Attended</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="session-info">
+                                <div class="session-icon">
+                                    <ion-icon name="globe-outline"></ion-icon>
+                                </div>
+                                <div class="session-details">
+                                    <h3>Networking Basics</h3>
+                                    <p>Fundamentals of networking</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="session-details">
+                                <h3>10 May 2025</h3>
+                                <p>9:00 PM IST</p>
+                            </div>
+                        </td>
+                        <td><span class="status completed">Completed</span></td>
+                        <td><button class="join-btn" disabled><ion-icon name="checkmark-circle-outline"></ion-icon> Attended</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="session-info">
+                                <div class="session-icon">
+                                    <ion-icon name="trending-up-outline"></ion-icon>
+                                </div>
+                                <div class="session-details">
+                                    <h3>Networking Advance</h3>
+                                    <p>Advanced networking concepts</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="session-details">
+                                <h3>17 May 2025</h3>
+                                <p>9:00 PM IST</p>
+                            </div>
+                        </td>
+                        <td><span class="status live">Live Now</span></td>
+                        <td><a href="https://meet.google.com/abc-defg-hij" class="join-btn"><ion-icon name="videocam-outline"></ion-icon> Join Now</a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="session-info">
+                                <div class="session-icon">
+                                    <ion-icon name="desktop-outline"></ion-icon>
+                                </div>
+                                <div class="session-details">
+                                    <h3>Virtual Lab Setup</h3>
+                                    <p>Setting up your lab environment</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="session-details">
+                                <h3>18 May 2025</h3>
+                                <p>9:00 PM IST</p>
+                            </div>
+                        </td>
+                        <td><span class="status upcoming">Upcoming</span></td>
+                        <td><button class="join-btn" disabled><ion-icon name="time-outline"></ion-icon> Not Started</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="session-info">
+                                <div class="session-icon">
+                                    <ion-icon name="terminal-outline"></ion-icon>
+                                </div>
+                                <div class="session-details">
+                                    <h3>Learning Linux</h3>
+                                    <p>Linux command line basics</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="session-details">
+                                <h3>24 May 2025</h3>
+                                <p>9:00 PM IST</p>
+                            </div>
+                        </td>
+                        <td><span class="status upcoming">Upcoming</span></td>
+                        <td><button class="join-btn" disabled><ion-icon name="time-outline"></ion-icon> Not Started</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- =========== Scripts =========  -->
-    <script src="assets/js/main.js"></script>
+    <!-- Scripts -->
+    <script>
+        // Toggle Menu
+        const toggle = document.querySelector('.toggle');
+        const navigation = document.querySelector('.navigation');
+        const main = document.querySelector('.main');
+        const toggleBtn = document.querySelector('.toggle-btn');
 
+        toggle.onclick = function() {
+            navigation.classList.toggle('active');
+            main.classList.toggle('active');
+            toggle.classList.toggle('active');
+        };
 
-    <!-- ====== ionicons ======= -->
+        // Add active class to current menu item
+        const menuItems = document.querySelectorAll('.navigation ul li a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Filter buttons functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // Here you would add filtering logic
+                // For now it's just UI demonstration
+            });
+        });
+
+        // Simulate live session indicator
+        const liveStatus = document.querySelector('.status.live');
+        if (liveStatus) {
+            setInterval(() => {
+                liveStatus.style.boxShadow = '0 0 0 0 rgba(249, 65, 68, 0.7)';
+                setTimeout(() => {
+                    liveStatus.style.boxShadow = '0 0 0 10px rgba(249, 65, 68, 0)';
+                }, 500);
+            }, 1500);
+        }
+    </script>
+
+    <!-- Ion Icons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
