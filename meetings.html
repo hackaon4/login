@@ -394,50 +394,82 @@
 
 <body>
     <!-- Navigation -->
-    <div class="navigation">
-        <ul>
-            <li>
-                <a href="/index.html">
-                    <span class="icon">
-                        <ion-icon name="home-outline"></ion-icon>
-                    </span>
-                    <span class="title">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="active">
-                    <span class="icon">
-                        <ion-icon name="calendar-outline"></ion-icon>
-                    </span>
-                    <span class="title">Meetings</span>
-                </a>
-            </li>
-            <li>
-                <a href="/Tests">
-                    <span class="icon">
-                        <ion-icon name="document-text-outline"></ion-icon>
-                    </span>
-                    <span class="title">Tests</span>
-                </a>
-            </li>
-            <li>
-                <a href="/Resources">
-                    <span class="icon">
-                        <ion-icon name="book-outline"></ion-icon>
-                    </span>
-                    <span class="title">Resources</span>
-                </a>
-            </li>
-            <li>
-                <a href="/video.html">
-                    <span class="icon">
-                        <ion-icon name="videocam-outline"></ion-icon>
-                    </span>
-                    <span class="title">Video</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="favicon-32x32.png" alt="">
+                        </span>
+                        <span class="title">Welcome <span id="loggedUserFName"></id> </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/index.html">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/meetings.html">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Videos">
+                        <span class="icon">
+                            <ion-icon name="videocam-outline"></ion-icon>
+                        </span>
+                        <span class="title">Videos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Resources">
+                        <span class="icon">
+                            <ion-icon name="library-outline"></ion-icon>
+                        </span>
+                        <span class="title">Resources</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Tests">
+                        <span class="icon">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tests</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="https://wa.me/917070140150">
+                        <span class="icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </span>
+                        <span class="title">Help</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title" id="logout" >Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
     <!-- Main Content -->
     <div class="main">
