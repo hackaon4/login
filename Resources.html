@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources - Learn with Highend Tech</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script type="module" src="dscript.js"></script>
+    <style>
+        /* unvisited link */
+        a:link {
+            color: rgb(107, 106, 106);
+        }
+
+        /* visited link */
+        a:visited {
+            color: green;
+        }
+
+        /* mouse over link */
+        a:hover {
+            color: rgb(255, 255, 255);
+        }
+
+        /* selected link */
+        a:active {
+            color: rgb(255, 255, 255);
+        }
+        
+        /* Extended canvas container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .navigation {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        
+        .main {
+            flex-grow: 1;
+            width: calc(100% - 250px);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .resource-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .resource-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .resource-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--blue);
+        }
+        
+        .resource-category {
+            background: var(--light-blue);
+            color: var(--blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .resource-description {
+            color: var(--dark-grey);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        .resource-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .resource-download {
+            background: var(--blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .resource-download:hover {
+            background: var(--dark-blue);
+        }
+        
+        .resource-info {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .resource-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--grey);
+            font-size: 1rem;
+        }
+        
+        .search-container {
+            margin-bottom: 35px;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid var(--light-grey);
+            font-size: 1.1rem;
+            min-width: 300px;
+        }
+        
+        .filter-dropdown {
+            padding: 15px 20px;
+            border-radius: 6px;
+            border: 1px solid var(--light-grey);
+            background: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        /* Extended resources grid */
+        .resources-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+        }
+        
+        .cardBox {
+            max-width: 1400px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .details {
+            width: 100%;
+            max-width: 1400px;
+        }
+        
+        .recentOrders {
+            width: 100% !important;
+            max-width: 1400px;
+        }
+        
+        /* Larger cards */
+        .card {
+            padding: 25px;
+        }
+        
+        .numbers {
+            font-size: 1.8rem;
+        }
+        
+        .cardName {
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .resources-container {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+            
+            .cardBox {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .navigation {
+                width: 100%;
+            }
+            
+            .main {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .resources-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cardBox {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="favicon-32x32.png" alt="">
+                        </span>
+                        <span class="title">Welcome <span id="loggedUserFName"></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/index.html">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/meetings.html">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/video">
+                        <span class="icon">
+                            <ion-icon name="videocam-outline"></ion-icon>
+                        </span>
+                        <span class="title">Videos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/resources" class="active">
+                        <span class="icon">
+                            <ion-icon name="library-outline"></ion-icon>
+                        </span>
+                        <span class="title">Resources</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/test">
+                        <span class="icon">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tests</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="wa.me/917070140150">
+                        <span class="icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </span>
+                        <span class="title">Help</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title" id="logout">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="user">
+                    <img src="assets/imgs/OIP.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Resources Header ================== -->
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers">500+</div>
+                        <div class="cardName">Total Resources</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="library-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">12</div>
+                        <div class="cardName">Categories</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="folder-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">45</div>
+                        <div class="cardName">New This Month</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="sparkles-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">1.2GB</div>
+                        <div class="cardName">Total Downloads</div>
+                    </div>
+                    <div class="iconBx">
+                        <ion-icon name="cloud-download-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================ Resources List ================= -->
+            <div class="details">
+                <div class="recentOrders" style="width: 100%;">
+                    <div class="cardHeader">
+                        <h2>Study Materials</h2>
+                        <div class="search-container">
+                            <input type="text" id="searchInput" placeholder="Search resources..." onkeyup="searchResources()">
+                            <select class="filter-dropdown" id="categoryFilter" onchange="filterResources()">
+                                <option value="all">All Categories</option>
+                                <option value="networking">Networking</option>
+                                <option value="linux">Linux</option>
+                                <option value="security">Security</option>
+                                <option value="programming">Programming</option>
+                                <option value="cloud">Cloud Computing</option>
+                                <option value="certification">Certification</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="resources-container" id="resourcesContainer">
+                        <!-- Resource Card 1 -->
+                        <div class="resource-card" data-category="networking" data-title="networking fundamentals guide">
+                            <div class="resource-header">
+                                <h3 class="resource-title">Networking Fundamentals Guide</h3>
+                                <span class="resource-category">Networking</span>
+                            </div>
+                            <p class="resource-description">
+                                Comprehensive guide covering all networking basics including TCP/IP, DNS, DHCP, and subnetting with practical examples. This 45-page PDF includes diagrams, configuration examples, and troubleshooting tips for network administrators.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> PDF (4.2MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 45 pages</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 1,240 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Card 2 -->
+                        <div class="resource-card" data-category="linux" data-title="linux command cheat sheet">
+                            <div class="resource-header">
+                                <h3 class="resource-title">Linux Command Cheat Sheet</h3>
+                                <span class="resource-category">Linux</span>
+                            </div>
+                            <p class="resource-description">
+                                Handy reference for all essential Linux commands with examples for file management, permissions, networking and system monitoring. This comprehensive cheat sheet covers Bash commands, package management, process control, and advanced shell features.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> PDF (1.8MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 12 pages</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 2,450 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Card 3 -->
+                        <div class="resource-card" data-category="programming" data-title="python for network engineers">
+                            <div class="resource-header">
+                                <h3 class="resource-title">Python for Network Engineers</h3>
+                                <span class="resource-category">Programming</span>
+                            </div>
+                            <p class="resource-description">
+                                Learn how to automate network tasks using Python with practical scripts for device configuration, monitoring and troubleshooting. This package includes Jupyter notebooks with examples for Cisco, Juniper, and Arista devices, plus API integration samples.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> ZIP (3.5MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 8 lessons</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 890 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Card 4 -->
+                        <div class="resource-card" data-category="certification" data-title="ccna practice tests">
+                            <div class="resource-header">
+                                <h3 class="resource-title">CCNA Practice Tests</h3>
+                                <span class="resource-category">Certification</span>
+                            </div>
+                            <p class="resource-description">
+                                Collection of 5 practice tests with 300+ questions covering all CCNA exam topics with detailed explanations. Includes network fundamentals, IP connectivity, security fundamentals, automation and programmability. Updated for the latest exam version.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> PDF (6.7MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 78 pages</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 1,780 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Card 5 -->
+                        <div class="resource-card" data-category="networking" data-title="wireshark lab exercises">
+                            <div class="resource-header">
+                                <h3 class="resource-title">Wireshark Lab Exercises</h3>
+                                <span class="resource-category">Networking</span>
+                            </div>
+                            <p class="resource-description">
+                                Practical exercises to master network traffic analysis using Wireshark with sample capture files and solutions. Covers protocol analysis, troubleshooting methodology, security monitoring, and performance optimization techniques.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> ZIP (15.2MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 12 labs</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 1,020 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Resource Card 6 -->
+                        <div class="resource-card" data-category="cloud" data-title="aws cloud basics">
+                            <div class="resource-header">
+                                <h3 class="resource-title">AWS Cloud Basics</h3>
+                                <span class="resource-category">Cloud Computing</span>
+                            </div>
+                            <p class="resource-description">
+                                Introduction to AWS services including EC2, S3, VPC with hands-on exercises and architecture diagrams. Learn foundational cloud concepts, deployment models, and best practices for building scalable and secure cloud infrastructure.
+                            </p>
+                            <div class="resource-footer">
+                                <div class="resource-info">
+                                    <span><ion-icon name="document-text-outline"></ion-icon> PDF (5.1MB)</span>
+                                    <span><ion-icon name="time-outline"></ion-icon> 32 pages</span>
+                                    <span><ion-icon name="download-outline"></ion-icon> 1,560 downloads</span>
+                                </div>
+                                <a href="#" class="resource-download">Download Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        function searchResources() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const resources = document.querySelectorAll('.resource-card');
+            
+            resources.forEach(resource => {
+                const title = resource.getAttribute('data-title');
+                if (title.includes(filter)) {
+                    resource.style.display = "";
+                } else {
+                    resource.style.display = "none";
+                }
+            });
+        }
+        
+        function filterResources() {
+            const select = document.getElementById('categoryFilter');
+            const filter = select.value;
+            const resources = document.querySelectorAll('.resource-card');
+            
+            resources.forEach(resource => {
+                const category = resource.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    resource.style.display = "";
+                } else {
+                    resource.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

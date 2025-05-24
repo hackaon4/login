@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Challenges | Ends</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #2d2d39;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #444;
+            padding-bottom: 1rem;
+        }
+        
+        .challenge-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #444;
+        }
+        
+        .challenge-tab {
+            padding: 10px 20px;
+            background: #3a3a4a;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge-tab:hover {
+            background: #4a4a5a;
+        }
+        
+        .challenge-tab.active {
+            background: #4a6cf7;
+        }
+        
+        .challenge-content {
+            display: none;
+            padding: 1.5rem;
+            background: #252531;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .challenge-content.active {
+            display: block;
+        }
+        
+        .challenge-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .hint-box {
+            background: #3a3a4a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #4a6cf7;
+        }
+        
+        .answer-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .answer-input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: #3a3a4a;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .submit-btn {
+            padding: 12px 24px;
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #3a5ce4;
+        }
+        
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .correct {
+            background: #2e7d32;
+            display: block;
+        }
+        
+        .incorrect {
+            background: #c62828;
+            display: block;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .status-pending {
+            background: #f57c00;
+        }
+        
+        .status-completed {
+            background: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                 <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="favicon-32x32.png" alt="">
+                        </span>
+                        <span class="title">Welcome <span id="loggedUserFName"></id> </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/index.html">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/meetings.html">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Meetings</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/video">
+                        <span class="icon">
+                            <ion-icon name="videocam-outline"></ion-icon>
+                        </span>
+                        <span class="title">Videos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/resources">
+                        <span class="icon">
+                            <ion-icon name="library-outline"></ion-icon>
+                        </span>
+                        <span class="title">Resources</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/test">
+                        <span class="icon">
+                            <ion-icon name="document-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tests</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="wa.me/917070140150">
+                        <span class="icon">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                        </span>
+                        <span class="title">Help</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon id="logout" name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title" id="logout" >Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+                <div class="user">
+                    <img src="assets/imgs/OIP.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Test Content ================== -->
+            <div class="test-container">
+                <div class="test-header">
+                    <h1>CTF Challenges</h1>
+                    <p>Test your skills with these capture-the-flag challenges</p>
+                </div>
+                
+                <div class="challenge-tabs" id="challengeTabs">
+                    <div class="challenge-tab active" data-tab="1">
+                        Challenge 1
+                        <span class="status-indicator status-pending" id="status1"></span>
+                    </div>
+                    <div class="challenge-tab" data-tab="2">
+                        Challenge 2
+                        <span class="status-indicator status-pending" id="status2"></span>
+                    </div>
+                    <div class="challenge-tab" data-tab="3">
+                        Challenge 3
+                        <span class="status-indicator status-pending" id="status3"></span>
+                    </div>
+                </div>
+                
+                <!-- Challenge 1 Content -->
+                <div class="challenge-content active" id="content1">
+                    <div class="challenge-description">
+                        <h3>Basic Security Challenge</h3>
+                        <p>Find the hidden flag in this webpage. The flag is a secret string that's been encoded and hidden in the page source.</p>
+                        <div class="hint-box">
+                            <h4>Hint:</h4>
+                            <p>Inspect the page source carefully. The answer is encoded in Base64 format.</p>
+                        </div>
+                    </div>
+                    <div class="answer-form">
+                        <input type="text" id="answerInput1" class="answer-input" placeholder="Enter the flag here...">
+                        <button class="submit-btn" onclick="checkAnswer(1)">Submit</button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+                
+                <!-- Challenge 2 Content -->
+                <div class="challenge-content" id="content2">
+                    <div class="challenge-description">
+                        <h3>Network Analysis Challenge</h3>
+                        <p>Analyze the following network packet data to find the secret flag:</p>
+                        <pre>48 65 78 20 66 6c 61 67 3a 20 54 68 31 73 49 73 4e 30 74 48 33 78</pre>
+                        <div class="hint-box">
+                            <h4>Hint:</h4>
+                            <p>Convert the hex values to ASCII characters.</p>
+                        </div>
+                    </div>
+                    <div class="answer-form">
+                        <input type="text" id="answerInput2" class="answer-input" placeholder="Enter the flag here...">
+                        <button class="submit-btn" onclick="checkAnswer(2)">Submit</button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+                
+                <!-- Challenge 3 Content -->
+                <div class="challenge-content" id="content3">
+                    <div class="challenge-description">
+                        <h3>Cryptography Challenge</h3>
+                        <p>Decrypt the following ciphertext to find the flag:</p>
+                        <pre>Gur svefg pbqr vf "pbqr{p1zza}"</pre>
+                        <div class="hint-box">
+                            <h4>Hint:</h4>
+                            <p>This uses ROT13 cipher (rotate each letter by 13 positions).</p>
+                        </div>
+                    </div>
+                    <div class="answer-form">
+                        <input type="text" id="answerInput3" class="answer-input" placeholder="Enter the flag here...">
+                        <button class="submit-btn" onclick="checkAnswer(3)">Submit</button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== Scripts =========  -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Encoded answers (not directly visible in source)
+        const challengeAnswers = {
+            1: "ZmxhZ3tIMWdoM3N0TGV2M2xfQ1RGX0NoNGxsM25nM30=", // Base64 encoded
+            2: "48 65 78 20 66 6c 61 67 3a 20 54 68 31 73 49 73 4e 30 74 48 33 78", // Hex encoded
+            3: "Gur svefg pbqr vf \"pbqr{p1zza}\"" // ROT13 encoded
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize challenge status from cookies
+            for (let i = 1; i <= 3; i++) {
+                if (getCookie(`challenge${i}_completed`) === 'true') {
+                    document.getElementById(`status${i}`).className = 'status-indicator status-completed';
+                }
+            }
+            
+            // Set up click handlers for challenge tabs
+            const challengeTabs = document.querySelectorAll('.challenge-tab');
+            challengeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabNum = this.getAttribute('data-tab');
+                    
+                    // Set active tab
+                    challengeTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    document.querySelectorAll('.challenge-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`content${tabNum}`).classList.add('active');
+                });
+            });
+        });
+        
+        function checkAnswer(challengeNum) {
+            const userAnswer = document.getElementById(`answerInput${challengeNum}`).value.trim();
+            const correctAnswer = getCorrectAnswer(challengeNum);
+            const feedback = document.getElementById(`feedback${challengeNum}`);
+            
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                // Correct answer
+                feedback.textContent = 'Correct! Flag: ' + correctAnswer;
+                feedback.className = 'feedback correct';
+                
+                // Mark challenge as completed in cookie
+                setCookie(`challenge${challengeNum}_completed`, 'true', 30); // Expires in 30 days
+                
+                // Update status indicator
+                document.getElementById(`status${challengeNum}`).className = 'status-indicator status-completed';
+            } else {
+                // Incorrect answer
+                feedback.textContent = 'Incorrect answer. Try again!';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+        
+        function getCorrectAnswer(challengeNum) {
+            const encodedAnswer = challengeAnswers[challengeNum];
+            
+            // Different decoding for different challenges
+            switch(challengeNum) {
+                case 1:
+                    return atob(encodedAnswer); // Base64 decode
+                case 2:
+                    return hexToAscii(encodedAnswer); // Hex to ASCII
+                case 3:
+                    return rot13(encodedAnswer.split('"')[1]); // ROT13 decode
+                default:
+                    return encodedAnswer;
+            }
+        }
+        
+        // Hex to ASCII converter
+        function hexToAscii(hex) {
+            const hexArray = hex.split(' ');
+            let str = '';
+            for (let i = 0; i < hexArray.length; i++) {
+                str += String.fromCharCode(parseInt(hexArray[i], 16));
+            }
+            return str;
+        }
+        
+        // ROT13 decoder
+        function rot13(str) {
+            return str.replace(/[a-zA-Z]/g, function(c) {
+                return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+            });
+        }
+        
+        // Cookie functions
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        function getCookie(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            
+            for(let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+    </script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
