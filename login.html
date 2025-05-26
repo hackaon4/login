@@ -1,5 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+  <style>
+/* unvisited link */
+a:link {
+  color: rgb(107, 106, 106);
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: rgb(255, 255, 255);
+}
+
+/* selected link */
+a:active {
+  color: rgb(255, 255, 255);
+}
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,13 +57,6 @@
         </div>
        <button class="btn" id="submitSignUp" >Sign Up</button>
       </form>
-      <p class="or">
-        ----------or--------
-      </p>
-      <div class="icons">
-        <i class="fab fa-google"></i>
-        <i class="fab fa-facebook"></i>
-      </div>
       <div class="links">
         <p>Already Have Account ?</p>
         <button id="signInButton">Sign In</button>
@@ -64,6 +78,9 @@
             <input type="password" id="password"  placeholder="Password" required>
               <label for="password">Password</label>
           </div>
+          <p>
+            <button id="signUpButton">Sign Up</button>
+          </p>
          <button  class="btn"  id="submitSignIn">Sign In</button>
         </form>
         </div>
