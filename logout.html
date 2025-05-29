@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ends - Logout</title>
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script type="module" src="dscript.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            max-width: 400px;
+        }
+        .robot-container {
+            width: 150px;
+            height: 200px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        button {
+            padding: 12px 25px;
+            border: 2px solid black;
+            background: white;
+            color: black;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: black;
+            color: white;
+        }
+        #logout {
+            border-color: black;
+        }
+        
+        /* Robot parts */
+        .robot-head {
+            fill: #f0f0f0;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .robot-face {
+            fill: #e0e0e0;
+        }
+        .eye-socket {
+            fill: #d0d0d0;
+        }
+        .eye {
+            fill: #333;
+        }
+        .mouth {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="robot-container">
+            <svg viewBox="0 0 200 250" class="robot">
+                <!-- Robot head -->
+                <rect x="25" y="20" width="150" height="180" rx="20" class="robot-head"/>
+                
+                <!-- Face plate -->
+                <rect x="45" y="50" width="110" height="120" rx="10" class="robot-face"/>
+                
+                <!-- Eye sockets -->
+                <rect x="65" y="70" width="30" height="30" rx="15" class="eye-socket"/>
+                <rect x="105" y="70" width="30" height="30" rx="15" class="eye-socket"/>
+                
+                <!-- Eyes (will move) -->
+                <circle cx="80" cy="85" r="8" class="eye" id="left-eye"/>
+                <circle cx="120" cy="85" r="8" class="eye" id="right-eye"/>
+                
+                <!-- Sad mouth -->
+                <path d="M80 140 Q100 120 120 140" class="mouth"/>
+            </svg>
+        </div>
+        <h1>Are you sure you want to logout?</h1>
+        <div class="buttons">
+            <button id="logout">Yes, I'm sure</button>
+            <button onclick="window.location.href='index.html'">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Make eyes follow cursor
+        const leftEye = document.getElementById('left-eye');
+        const rightEye = document.getElementById('right-eye');
+        const robotContainer = document.querySelector('.robot-container');
+        
+        document.addEventListener('mousemove', (e) => {
+            const robotRect = robotContainer.getBoundingClientRect();
+            const robotCenterX = robotRect.left + robotRect.width / 2;
+            const robotCenterY = robotRect.top + robotRect.height / 2;
+            
+            // Calculate angle between robot and cursor
+            const angle = Math.atan2(e.clientY - robotCenterY, e.clientX - robotCenterX);
+            
+            // Calculate eye position (limited to eye socket)
+            const eyeDistance = 5;
+            const leftEyeX = 80 + Math.cos(angle) * eyeDistance;
+            const leftEyeY = 85 + Math.sin(angle) * eyeDistance;
+            const rightEyeX = 120 + Math.cos(angle) * eyeDistance;
+            const rightEyeY = 85 + Math.sin(angle) * eyeDistance;
+            
+            leftEye.setAttribute('cx', leftEyeX);
+            leftEye.setAttribute('cy', leftEyeY);
+            rightEye.setAttribute('cx', rightEyeX);
+            rightEye.setAttribute('cy', rightEyeY);
+        });
+
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', function() {
+            // Add your logout logic here
+            alert('Logged out successfully!');
+            // window.location.href = 'login.html'; // Uncomment to redirect after logout
+        });
+    </script>
+</body>
+</html>
