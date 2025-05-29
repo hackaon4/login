@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hatsune Miku Companion</title>
+    <style>
+        /* Miku Container */
+        .miku-companion {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 220px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .miku-companion:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Miku SVG */
+        .miku-hair {
+            fill: #37C7B2;
+        }
+        
+        .miku-hair-dark {
+            fill: #2DAE9A;
+        }
+        
+        .miku-skin {
+            fill: #FFF5DE;
+        }
+        
+        .miku-outline {
+            stroke: #333;
+            stroke-width: 1.5;
+            fill: none;
+        }
+        
+        .miku-eye {
+            fill: #66CCFF;
+        }
+        
+        .miku-pupil {
+            fill: #333;
+            transition: transform 0.2s;
+        }
+        
+        .miku-mouth {
+            fill: none;
+            stroke: #FF6699;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        
+        .miku-clothes {
+            fill: #22B14C;
+        }
+        
+        .miku-clothes-dark {
+            fill: #1E9E42;
+        }
+        
+        .miku-sleeves {
+            fill: #B5E61D;
+        }
+        
+        /* Speech Bubble */
+        .speech-bubble {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 2px solid #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            max-width: 200px;
+            text-align: center;
+            margin-bottom: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
+        }
+        
+        .miku-companion:hover .speech-bubble {
+            opacity: 1;
+        }
+        
+        /* Music Notes */
+        .music-note {
+            position: absolute;
+            color: #66CCFF;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatNote 2s ease-out forwards;
+        }
+        
+        @keyframes floatNote {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="miku-companion">
+        <div class="speech-bubble">Sekai de ichiban ohime-sama! ✨</div>
+        <svg viewBox="0 0 200 300" class="miku">
+            <!-- Hair Back -->
+            <path d="M70,50 Q100,0 130,50 L150,200 Q100,250 50,200 Z" class="miku-hair"/>
+            <path d="M70,50 Q100,0 130,50 L150,200 Q100,250 50,200 Z" class="miku-outline"/>
+            
+            <!-- Body -->
+            <path d="M80,180 Q100,220 120,180 L120,250 Q100,280 80,250 Z" class="miku-clothes"/>
+            <path d="M80,180 Q100,220 120,180 L120,250 Q100,280 80,250 Z" class="miku-outline"/>
+            
+            <!-- Sleeves -->
+            <ellipse cx="60" cy="190" rx="20" ry="25" class="miku-sleeves"/>
+            <ellipse cx="140" cy="190" rx="20" ry="25" class="miku-sleeves"/>
+            <ellipse cx="60" cy="190" rx="20" ry="25" class="miku-outline"/>
+            <ellipse cx="140" cy="190" rx="20" ry="25" class="miku-outline"/>
+            
+            <!-- Hair Front -->
+            <path d="M60,60 Q100,30 140,60 L130,120 Q100,100 70,120 Z" class="miku-hair-dark"/>
+            <path d="M60,60 Q100,30 140,60 L130,120 Q100,100 70,120 Z" class="miku-outline"/>
+            
+            <!-- Twin Tails -->
+            <path d="M50,200 Q40,180 30,200 Q20,230 40,240 Q60,220 50,200 Z" class="miku-hair"/>
+            <path d="M150,200 Q160,180 170,200 Q180,230 160,240 Q140,220 150,200 Z" class="miku-hair"/>
+            <path d="M50,200 Q40,180 30,200 Q20,230 40,240 Q60,220 50,200 Z" class="miku-outline"/>
+            <path d="M150,200 Q160,180 170,200 Q180,230 160,240 Q140,220 150,200 Z" class="miku-outline"/>
+            
+            <!-- Head -->
+            <circle cx="100" cy="120" r="50" class="miku-skin"/>
+            <circle cx="100" cy="120" r="50" class="miku-outline"/>
+            
+            <!-- Eyes -->
+            <ellipse cx="80" cy="110" rx="10" ry="12" class="miku-eye"/>
+            <ellipse cx="120" cy="110" rx="10" ry="12" class="miku-eye"/>
+            <ellipse cx="80" cy="110" rx="10" ry="12" class="miku-outline"/>
+            <ellipse cx="120" cy="110" rx="10" ry="12" class="miku-outline"/>
+            
+            <!-- Pupils -->
+            <circle cx="80" cy="110" r="4" class="miku-pupil" id="left-pupil"/>
+            <circle cx="120" cy="110" r="4" class="miku-pupil" id="right-pupil"/>
+            
+            <!-- Mouth -->
+            <path d="M90 140 Q100 150 110 140" class="miku-mouth" id="miku-mouth"/>
+        </svg>
+    </div>
+
+    <script>
+        // Make pupils follow cursor
+        const leftPupil = document.getElementById('left-pupil');
+        const rightPupil = document.getElementById('right-pupil');
+        const mouth = document.getElementById('miku-mouth');
+        const miku = document.querySelector('.miku-companion');
+        
+        // Eye movement
+        document.addEventListener('mousemove', (e) => {
+            const mikuRect = miku.getBoundingClientRect();
+            const mikuCenterX = mikuRect.left + mikuRect.width / 2;
+            const mikuCenterY = mikuRect.top + mikuRect.height / 2;
+            
+            // Calculate angle between miku and cursor
+            const angle = Math.atan2(e.clientY - mikuCenterY, e.clientX - mikuCenterX);
+            
+            // Calculate pupil position (limited to eye)
+            const pupilDistance = 3;
+            const leftPupilX = 80 + Math.cos(angle) * pupilDistance;
+            const leftPupilY = 110 + Math.sin(angle) * pupilDistance;
+            const rightPupilX = 120 + Math.cos(angle) * pupilDistance;
+            const rightPupilY = 110 + Math.sin(angle) * pupilDistance;
+            
+            leftPupil.setAttribute('cx', leftPupilX);
+            leftPupil.setAttribute('cy', leftPupilY);
+            rightPupil.setAttribute('cx', rightPupilX);
+            rightPupil.setAttribute('cy', rightPupilY);
+        });
+        
+        // Interactive animations
+        miku.addEventListener('click', function() {
+            // Change mouth to singing expression
+            mouth.setAttribute('d', 'M90 140 Q100 160 110 140');
+            
+            // Change speech bubble text
+            const bubble = document.querySelector('.speech-bubble');
+            const messages = [
+                "Miku miku ni shite ageru!",
+                "Sekai de ichiban ohime-sama!",
+                "Iiya iiya, iya iya iya!",
+                "Hello! I'm Hatsune Miku!",
+                "Let's sing together!",
+                "World is Mine!",
+                "39! (Thank you!)"
+            ];
+            bubble.textContent = messages[Math.floor(Math.random() * messages.length)];
+            
+            // Create music notes
+            createMusicNotes();
+            
+            // Reset mouth after animation
+            setTimeout(() => {
+                mouth.setAttribute('d', 'M90 140 Q100 150 110 140');
+            }, 1000);
+        });
+        
+        // Create floating music notes
+        function createMusicNotes() {
+            const notes = ['♪', '♫', '♩', '♬'];
+            const mikuRect = miku.getBoundingClientRect();
+            
+            for (let i = 0; i < 4; i++) {
+                const note = document.createElement('div');
+                note.className = 'music-note';
+                note.textContent = notes[Math.floor(Math.random() * notes.length)];
+                note.style.left = `${mikuRect.left + 30 + Math.random() * 60}px`;
+                note.style.top = `${mikuRect.top}px`;
+                note.style.animationDelay = `${i * 0.2}s`;
+                
+                document.body.appendChild(note);
+                
+                // Remove note after animation
+                setTimeout(() => {
+                    note.remove();
+                }, 2000);
+            }
+        }
+        
+        // Random idle animations
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                // Blink animation
+                leftPupil.setAttribute('ry', '0.1');
+                rightPupil.setAttribute('ry', '0.1');
+                setTimeout(() => {
+                    leftPupil.removeAttribute('ry');
+                    rightPupil.removeAttribute('ry');
+                }, 200);
+            }
+            
+            if (Math.random() > 0.8) {
+                // Head tilt animation
+                miku.style.transform = 'rotate(5deg)';
+                setTimeout(() => {
+                    miku.style.transform = 'rotate(-5deg)';
+                    setTimeout(() => {
+                        miku.style.transform = 'rotate(0)';
+                    }, 200);
+                }, 200);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
