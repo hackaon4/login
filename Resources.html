@@ -228,7 +228,7 @@
             }
         }
 
-        .profile-popup {
+.profile-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -243,37 +243,152 @@
 
 .popup-content {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.popup-content h3 {
+    margin-top: 0;
+    text-align: center;
+    color: #333;
+}
+
+.upload-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: #45a049;
+}
+
+.file-requirements {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.divider::before {
+    margin-right: 10px;
+}
+
+.divider::after {
+    margin-left: 10px;
+}
+
+.picture-options h4 {
+    margin-bottom: 15px;
+    color: #333;
     text-align: center;
 }
 
-.picture-options {
-    display: flex;
-    justify-content: center;
+.predefined-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
+    margin-bottom: 20px;
+}
+
+.predefined-options img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    object-fit: cover;
+}
+
+.predefined-options img:hover {
+    transform: scale(1.05);
+}
+
+.predefined-options img.selected {
+    border-color: #4CAF50;
+    transform: scale(1.05);
+}
+
+.preview-section {
+    text-align: center;
     margin: 20px 0;
 }
 
-.picture-options img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
+.preview-section h4 {
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.picture-options img.selected {
-    border-color: #007bff;
+#profilePreview {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    border: 3px solid #eee;
+    display: none;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#confirmProfilePic, #cancelProfilePic {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #confirmProfilePic {
-    padding: 8px 16px;
-    background-color: #007bff;
+    background-color: #4CAF50;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+}
+
+#confirmProfilePic:hover {
+    background-color: #45a049;
+}
+
+#cancelProfilePic {
+    background-color: #f44336;
+    color: white;
+}
+
+#cancelProfilePic:hover {
+    background-color: #d32f2f;
 }
 
     </style>
@@ -592,22 +707,42 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <div id="profilePicPopup" class="profile-popup" style="display: none;">
+<div id="profilePicPopup" class="profile-popup" style="display: none;">
     <div class="popup-content">
         <h3>Choose Your Profile Picture</h3>
-        <div class="picture-options">
-            <img src="assets/imgs/OIP.jpg" alt="Option 1" data-pic="OIP.jpg">
-            <img src="assets/imgs/giphy.webp" alt="Option 2" data-pic="giphy.webp">
-            <img src="assets/imgs/200 (1).webp" alt="Option 3" data-pic="200 (1).webp">
-            <img src="assets/imgs/200.webp" alt="Option " data-pic="200.webp">
-            <img src="assets/imgs/download (1).jpeg" alt="Option " data-pic="download (1).jpeg">
-            <img src="assets/imgs/giphy (1).webp" alt="Option " data-pic="giphy (1).webp">
-            <img src="assets/imgs/giphy (2).webp" alt="Option " data-pic="giphy (2).webp">
-
-            <!-- Add more options as needed -->
+        
+        <div class="upload-section">
+            <label for="profileUpload" class="upload-btn">Upload Custom Picture</label>
+            <input type="file" id="profileUpload" accept=".png,.gif" style="display: none;">
+            <div class="file-requirements">(PNG or GIF only, max 2MB)</div>
         </div>
-        <button id="confirmProfilePic">Confirm Selection</button>
+        
+        <div class="divider">OR</div>
+        
+        <div class="picture-options">
+            <h4>Select from our options:</h4>
+            <div class="predefined-options">
+                <img src="assets/imgs/OIP.jpg" alt="Option 1" data-pic="OIP.jpg">
+                <img src="assets/imgs/giphy.webp" alt="Option 2" data-pic="giphy.webp">
+                <img src="assets/imgs/200 (1).webp" alt="Option 3" data-pic="200 (1).webp">
+                <img src="assets/imgs/200.webp" alt="Option 4" data-pic="200.webp">
+                <img src="assets/imgs/download (1).jpeg" alt="Option 5" data-pic="download (1).jpeg">
+                <img src="assets/imgs/giphy (1).webp" alt="Option 6" data-pic="giphy (1).webp">
+                <img src="assets/imgs/giphy (2).webp" alt="Option 7" data-pic="giphy (2).webp">
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <h4>Preview:</h4>
+            <img id="profilePreview" src="" alt="Preview" style="display: none;">
+        </div>
+        
+        <div class="popup-buttons">
+            <button id="confirmProfilePic">Confirm Selection</button>
+            <button id="cancelProfilePic" class="cancel-btn">Cancel</button>
+        </div>
     </div>
+</div>
 </div>
 
 
